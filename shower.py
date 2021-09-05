@@ -7,9 +7,10 @@ address = "ce:d7:b8:34:aa:e4"
 device_id = 4
 client_id = 63519
 
-if sys.argv[1] == '-h':
-    print("Run command with no arguments to get current status\nFirst argument is the output 1=1,2=2,3=both\nSecond argument is control 0=OFF,anything else for ON\ne.g python3 shower.py 1 1 # Turn on output 1")
-    exit()
+if len(sys.argv) > 1:
+    if sys.argv[1] == '-h':
+        print("Run command with no arguments to get current status\nFirst argument is the output 1=1,2=2,3=both\nSecond argument is control 0=OFF,anything else for ON\ne.g python3 shower.py 1 1 # Turn on output 1")
+        exit()
 
 device = miramode._connect(address)
 
