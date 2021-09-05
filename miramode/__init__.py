@@ -47,7 +47,7 @@ def _convert_temperature_reverse(mira_temp):
 @retrying.retry(stop_max_attempt_number=10)
 def _connect(address):
     adapter = pygatt.GATTToolBackend()
-    adapter.start()
+    adapter.start(reset_on_start=False)
     device = adapter.connect(
         address,
         timeout=TIMEOUT,
@@ -79,6 +79,11 @@ def get_state(address):
     # TODO: In some case it returns different data, without outlet values
     if len(data) == 19:
         return
+    
+    # TODO: Sometimes it's 13 too but stll contains required data
+    if len(data) == 13:
+        b = bytearray(b'\x00')
+        data[0:0] = b
 
     if len(data) != 14:
         raise Exception("Unexpected data length")
