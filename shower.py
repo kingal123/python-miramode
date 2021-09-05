@@ -7,8 +7,10 @@ address = "ce:d7:b8:34:aa:e4"
 device_id = 4
 client_id = 63519
 
+device = miramode._connect(address)
+
 try:
-    state = miramode.get_state(address)
+    state = miramode.get_state_noc(device)
 except:
     print("Data Exception")
     exit()
@@ -20,14 +22,31 @@ elif len(sys.argv) == 2 or len(sys.argv) == 0:
 elif len(sys.argv) == 3:
     if sys.argv[1] == '1':
         if sys.argv[2] == '0':
-            miramode.control_outlets(address, device_id, client_id, False, False, 39)
+            if state[1]:
+                miramode.control_outlets_noc(device, device_id, client_id, False, True, 39)
+            else:
+                miramode.control_outlets_noc(device, device_id, client_id, False, False, 39)
         else:
-            miramode.control_outlets(address, device_id, client_id, True, False, 39)
+            if state[1]:
+                miramode.control_outlets_noc(device, device_id, client_id, True, True, 39)
+            else:
+                miramode.control_outlets_noc(device, device_id, client_id, True, False, 39)
     elif sys.argv[1] == '2':
         if sys.argv[2] == '0':
-            miramode.control_outlets(address, device_id, client_id, False, False, 39)
+            if state[0]:
+                miramode.control_outlets_noc(device, device_id, client_id, True, False, 39)
+            else:
+                miramode.control_outlets_noc(device, device_id, client_id, False, False, 39)
         else:
-            miramode.control_outlets(address, device_id, client_id, False, True, 39)
+            if state[0]:
+                miramode.control_outlets_noc(device, device_id, client_id, True, True, 39)
+            else:
+                miramode.control_outlets_noc(device, device_id, client_id, False, True, 39)
+    elif sys.argv[1] == '3':
+        if sys.argv[2] == '0':
+            miramode.control_outlets_noc(device, device_id, client_id, False, False, 39)
+        else:
+            miramode.control_outlets_noc(device, device_id, client_id, True, True, 39)
     else:
         print("Incorrect output", sys.argv[1])
 else:

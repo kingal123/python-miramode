@@ -96,6 +96,27 @@ def get_state(address):
 
     return (outlet1, outlet2, temperature)
 
+def get_state_noc(device):
+    data = device.char_read(UUID_READ)
+    # TODO: In some case it returns different data, without outlet values
+    if len(data) == 19:
+        return
+    
+    # TODO: Sometimes it's 13 too but stll contains required data
+    if len(data) == 13:
+        b = bytearray(b'\x00')
+        data[0:0] = b
+
+    if len(data) != 14:
+        raise Exception("Unexpected data length")
+
+    temperature = _convert_temperature_reverse(data[6])
+    # Bytes at 7 and 8 are related to the temperature set on the shower
+    # controller.
+    outlet1 = data[9] == 0x64
+    outlet2 = data[10] == 0x64
+
+    return (outlet1, outlet2, temperature)
 
 def control_outlets(address, device_id, client_id, outlet1, outlet2,
                     temperature):
@@ -109,6 +130,17 @@ def control_outlets(address, device_id, client_id, outlet1, outlet2,
         0x64 if outlet2 else 0])
     _write(address, _get_payload_with_crc(payload, client_id))
 
+def control_outlets_noc(device, device_id, client_id, outlet1, outlet2,
+                    temperature):
+    payload = bytearray([
+        device_id,
+        0x87, 0x05,
+        1 if outlet1 or outlet2 else 3,
+        0x01,
+        _convert_temperature(temperature),
+        0x64 if outlet1 else 0,
+        0x64 if outlet2 else 0])
+    device.char_write(UUID_WRITE, _get_payload_with_crc(payload, client_id))
 
 def turn_on_bathfill(address, device_id, client_id):
     payload = bytearray([device_id, 0xb1, 0x01, 0x00])
