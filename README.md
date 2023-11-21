@@ -66,5 +66,28 @@ characterist 0x11 which look for example like this:
 *XX:87:05:01:01:90:64:00:YY:YY*
 
 XX is your device id and YYYY is a CRC code obtained from the rest of
-the payload plus the client id. Being the client id a 32 bit adapter,
+the payload plus the client id. Being the client id a 16 bit adapter,
 it can be quickly computed with a brute force loop.
+
+## Brute Force Loop
+Using crc16_loop.py - at the top of the python script are 2 byte arrays, you need to copy your value into these. data excludes the CRC and payl is the entire value.
+
+Split the value into hex pairs so they look the same as below.
+
+data = bytearray([
+        0x01,
+        0x87, 0x05,
+        0x03,
+        0x01,
+        0x9a,
+        0x00,
+        0x00])
+payl = bytearray([
+        0x01,
+        0x87, 0x05,
+        0x03,
+        0x01,
+        0x9a,
+        0x00,
+        0x00,
+        0xd5,0x28])
