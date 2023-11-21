@@ -2,7 +2,7 @@ import miramode
 import sys
 
 # This is the BLE address of the device
-address = "ce:d7:b8:34:aa:e4"
+address = "c1:73:51:1a:08:ec"
 # See below for how to obtain the device_id and client_id
 device_id = 1
 client_id = 5559
