@@ -5,7 +5,7 @@ import sys
 address = "ce:d7:b8:34:aa:e4"
 # See below for how to obtain the device_id and client_id
 device_id = 1
-client_id = 24829
+client_id = 5559
 
 if len(sys.argv) > 1:
     if sys.argv[1] == '-h':
