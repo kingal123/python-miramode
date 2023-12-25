@@ -6,6 +6,6 @@ address = "c1:73:51:1a:08:ec"
 device_id = 1
 client_id = 5559
 
-# Turn on the 1st outlet with a 40C degrees water temperature
+# Turn off the 1st outlet with a 40C degrees water temperature
 miramode.control_outlets(address, device_id, client_id, False, False, 39)
 
